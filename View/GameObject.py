@@ -1,10 +1,7 @@
 from Cell import Cell
 import random 
 
-class GameObject(Cell):
-    _grid = None
-    _color = None
-     
+class GameObject(Cell):     
     def __init__(self,width,height,color,grid):
         Cell.__init__(self,width,height,grid._margin)
         self._color = color

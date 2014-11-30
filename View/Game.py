@@ -8,7 +8,6 @@ from Obstacle import Obstacle
 
 from GameObject import GameObject
 
-
 # Define some colors
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
@@ -29,13 +28,14 @@ done = False
 
 widthOfCell = 20
 heightOfCell = 20
+sizeOfCell = 20
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
 size = (sizeCalculation, sizeCalculation)
 screen = pygame.display.set_mode(size)
 
 
-grid = Grid(numberOfCellsInColumnsOrRows,numberOfCellsInColumnsOrRows,screen,pygame)
+grid = Grid(numberOfCellsInColumnsOrRows,numberOfCellsInColumnsOrRows,sizeOfCell,screen,margin,pygame)
 animat = Animat(widthOfCell,heightOfCell,RED,grid)
 
 animat2 = Animat(widthOfCell,heightOfCell,BLUE,grid)

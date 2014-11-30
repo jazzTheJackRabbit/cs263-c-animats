@@ -1,18 +1,13 @@
 class Cell:
-    #__Class members__
-    _width = 0
-    _height = 0
-    _x = 0
-    _y = 0
-    _gridX = 0
-    _gridY = 0
-    _margin = 0    
-    
     #__init
     def __init__(self,width,height,margin):
         self._width = width
         self._height = height
         self._margin = margin
+        self._x = 0
+        self._y = 0
+        self._gridX = 0
+        self._gridY = 0
         
     def setGrid(self,grid):
         self._grid = grid

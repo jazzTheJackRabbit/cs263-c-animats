@@ -1,4 +1,5 @@
 from GameObject import GameObject
+from Obstacle import Obstacle
 import random
 
 class Animat(GameObject):   
@@ -7,12 +8,12 @@ class Animat(GameObject):
         GameObject.__init__(self,width,height,color,grid)        
     
     def moveAnimatOneStepInX(self,direction):
-        if(self.isWithinBounds(self._gridX+direction, self._gridY)):
+        if(self.isWithinBounds(self._gridX+direction, self._gridY) and not self.isOnObstacle(self._gridX + direction, self._gridY)):
             self._gridX += direction
         self.drawGameObjectAtCurrentPosition()
     
     def moveAnimatOneStepInY(self,direction):
-        if(self.isWithinBounds(self._gridX, self._gridY+direction)):
+        if(self.isWithinBounds(self._gridX, self._gridY+direction) and not self.isOnObstacle(self._gridX, self._gridY + direction)):
             self._gridY += direction 
         self.drawGameObjectAtCurrentPosition()
     
@@ -21,6 +22,10 @@ class Animat(GameObject):
             return False
         return True
            
+    def isOnObstacle(self,gridX,gridY):
+        if(Obstacle.dictionaryOfObstacles.has_key((gridX,gridY))):
+            return True
+        return False
     
     def setXYPosition(self,grid_x,grid_y): 
         if(self.isWithinBounds(grid_x,grid_y)):
@@ -38,4 +43,4 @@ class Animat(GameObject):
         elif random_movement == 2:
             self.moveAnimatOneStepInY(1)
         else:
-            self.moveAnimatOneStepInY(-1)
+            self.moveAnimatOneStepInY(-1)            

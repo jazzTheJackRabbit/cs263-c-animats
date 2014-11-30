@@ -1,22 +1,16 @@
 from Cell import Cell
 
 class Grid:
-    
-    #__Class members
-    _numberOfRows = 0
-    _numberOfColumns = 0
-    _margin = 5
-    _cellWidth = 20
-    _cellHeight = 20
-    _cellMatrix = []
-    _screen = None
-    _pygame = None
-    
-    def __init__(self,rowLength,columnLength,screen,pygame):
+       
+    def __init__(self,rowLength,columnLength,sizeOfCell,screen,margin,pygame):
         self._numberOfRows = rowLength
         self._numberOfColumns = columnLength
         self._screen = screen
         self._pygame = pygame
+        self._margin = margin
+        self._cellWidth = sizeOfCell
+        self._cellHeight = sizeOfCell
+        self._cellMatrix = []
         self.createGrid()
         
     def createGrid(self):        
