@@ -1,4 +1,5 @@
 import pygame
+import random
 from Grid import Grid
 from AnimatView import Animat
 # Define some colors
@@ -35,14 +36,12 @@ while not done:
     screen.fill(BLACK)    
     grid.drawGrid(WHITE)            
     
-    if flag:
-        animat.moveAnimatOneStepInX()
-        flag = not flag
-    else:
-#         animat.moveAnimatOneStepInY()
-        flag = not flag
+    animat.moveRandomly()
+    animat2.moveRandomly()
+        
     
     animat.drawAnimatAtCurrentPosition()
+    animat2.drawAnimatAtCurrentPosition()
     
     pygame.display.update()
     clock.tick(10)
