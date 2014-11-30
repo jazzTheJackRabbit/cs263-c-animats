@@ -3,8 +3,8 @@ from Cell import Cell
 class Grid:
     
     #__Class members
-    _numberOfRows = 10
-    _numberOfColumns = 10
+    _numberOfRows = 0
+    _numberOfColumns = 0
     _margin = 5
     _cellWidth = 20
     _cellHeight = 20
@@ -14,7 +14,7 @@ class Grid:
     
     def __init__(self,rowLength,columnLength,screen,pygame):
         self._numberOfRows = rowLength
-        self._columnLength = columnLength
+        self._numberOfColumns = columnLength
         self._screen = screen
         self._pygame = pygame
         self.createGrid()
@@ -29,7 +29,7 @@ class Grid:
             self._cellMatrix.append(cellRow)
     
     def drawGrid(self,cellColor):
-        for rowIndex in range(0, 10):            
-            for columnIndex in range(0,10):                
+        for rowIndex in range(0, self._numberOfRows):            
+            for columnIndex in range(0,self._numberOfColumns):                
                 self._cellMatrix[rowIndex][columnIndex].drawCellOnGrid(rowIndex,columnIndex,cellColor,self._screen)            
     
