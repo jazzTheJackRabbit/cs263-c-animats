@@ -57,9 +57,11 @@ while not done:
     animat.moveRandomly()
     animat2.moveRandomly()
         
-    [food.drawGameObjectAtCurrentPosition() for food in foods]
+    foodObjectKeys = Food.dictionaryOfFoodObjects.keys()
+    [Food.dictionaryOfFoodObjects[foodObjectPosition].drawGameObjectAtCurrentPosition() for foodObjectPosition in foodObjectKeys]
         
-    [obstacle.drawGameObjectAtCurrentPosition() for obstacle in obstacles]
+    obstacleKeys = Obstacle.dictionaryOfObstacles.keys()
+    [Obstacle.dictionaryOfObstacles[obstaclePosition].drawGameObjectAtCurrentPosition() for obstaclePosition in obstacleKeys]
     
     animat.drawGameObjectAtCurrentPosition()
     animat2.drawGameObjectAtCurrentPosition()
