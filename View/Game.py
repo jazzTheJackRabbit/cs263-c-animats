@@ -5,7 +5,8 @@ from Grid import Grid
 from AnimatView import Animat
 from Food import Food
 from Obstacle import Obstacle
-
+from Predator import Predator
+from Prey import Prey
 from GameObject import GameObject
 
 # Define some colors
@@ -21,7 +22,7 @@ pygame.init()
 pygame.display.set_caption("My Game") 
 clock = pygame.time.Clock()
 
-numberOfCellsInColumnsOrRows = 20
+numberOfCellsInColumnsOrRows = 10
 
 margin = 5
 done = False
@@ -36,9 +37,10 @@ screen = pygame.display.set_mode(size)
 
 
 grid = Grid(numberOfCellsInColumnsOrRows,numberOfCellsInColumnsOrRows,sizeOfCell,screen,margin,pygame)
-animat = Animat(widthOfCell,heightOfCell,RED,grid)
 
-animat2 = Animat(widthOfCell,heightOfCell,BLUE,grid)
+predator = Predator(widthOfCell,heightOfCell,RED,grid)
+
+prey = Prey(widthOfCell,heightOfCell,BLUE,grid)
 
 foods = [Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,10)]
 
@@ -54,8 +56,8 @@ while not done:
     screen.fill(BLACK)    
     grid.drawGrid(WHITE)            
     
-    animat.moveRandomly()
-    animat2.moveRandomly()
+    predator.moveRandomly()
+    prey.moveRandomly()
         
     foodObjectKeys = Food.dictionaryOfFoodObjects.keys()
     [Food.dictionaryOfFoodObjects[foodObjectPosition].drawGameObjectAtCurrentPosition() for foodObjectPosition in foodObjectKeys]
@@ -63,8 +65,8 @@ while not done:
     obstacleKeys = Obstacle.dictionaryOfObstacles.keys()
     [Obstacle.dictionaryOfObstacles[obstaclePosition].drawGameObjectAtCurrentPosition() for obstaclePosition in obstacleKeys]
     
-    animat.drawGameObjectAtCurrentPosition()
-    animat2.drawGameObjectAtCurrentPosition()
+    predator.drawGameObjectAtCurrentPosition()
+    prey.drawGameObjectAtCurrentPosition()
     
     pygame.display.update()
     clock.tick(10)

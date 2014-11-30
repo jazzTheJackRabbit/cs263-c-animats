@@ -1,6 +1,7 @@
 from GameObject import GameObject
 from Obstacle import Obstacle
 from Food import Food
+
 import random
 
 class Animat(GameObject):   
@@ -9,13 +10,13 @@ class Animat(GameObject):
         GameObject.__init__(self,width,height,color,grid)        
     
     def moveAnimatOneStepInX(self,direction):
-        if(self.isWithinBounds(self._gridX+direction, self._gridY) and not self.isOnObstacle(self._gridX + direction, self._gridY)):
+        if(self.isMovementPossible(self._gridX + direction, self._gridY)):
             self._gridX += direction
             self.removeFoodIfAnimatIsOnFood(self._gridX, self._gridY)
         self.drawGameObjectAtCurrentPosition()
     
     def moveAnimatOneStepInY(self,direction):
-        if(self.isWithinBounds(self._gridX, self._gridY+direction) and not self.isOnObstacle(self._gridX, self._gridY + direction)):
+        if(self.isMovementPossible(self._gridX, self._gridY+direction)):
             self._gridY += direction 
             self.removeFoodIfAnimatIsOnFood(self._gridX, self._gridY)
         self.drawGameObjectAtCurrentPosition()
@@ -51,3 +52,9 @@ class Animat(GameObject):
             self.moveAnimatOneStepInY(1)
         else:
             self.moveAnimatOneStepInY(-1)            
+            
+    def isMovementPossible(self,nextGridX,nextGridY):
+        if(self.isWithinBounds(nextGridX, nextGridY) and not self.isOnObstacle(nextGridX, nextGridY)):
+            return True
+        return False
+        
