@@ -1,6 +1,5 @@
 from AnimatView import Animat
 from Predator import Predator
-from networkx.classes.function import neighbors
 
 class Prey(Animat):
     
@@ -12,6 +11,7 @@ class Prey(Animat):
     
     def isNextMoveOnPredator(self,gridX,gridY):
         predatorPositionsInNeighborhood = self.getPredatorPositionsInNeighborhood(self._gridX, self._gridY)
+        #could also check length of the predatorsPositionsInNeighborhood, if it's 0
         if((gridX,gridY) in predatorPositionsInNeighborhood):
             return True
         else:
@@ -29,16 +29,17 @@ class Prey(Animat):
     
     def getNeighborGrids(self):
         positionsOfNeighborGrids = []
-        for i in range (-1,2):
-            for j in range (-1,2):
-                neighborPosition = (self._gridX + i, self._gridY + j)
-                if(self.isWithinBounds(neighborPosition[0],neighborPosition[1])):
-                    positionsOfNeighborGrids.append(neighborPosition)
+        for j in range (-1,2):
+            for i in range (-1,2):
+                if((not (i==0 and j==0))):
+                    neighborPosition = (self._gridX + i, self._gridY + j)
+                    if(self.isWithinBounds(neighborPosition[0],neighborPosition[1])):
+                        positionsOfNeighborGrids.append(neighborPosition)
         return positionsOfNeighborGrids
     
     def isMovementPossible(self,nextGridX,nextGridY):
         if(Animat.isMovementPossible(self, nextGridX, nextGridY)):
-            return self.isNextMoveOnPredator(nextGridX, nextGridY)
+            return not self.isNextMoveOnPredator(nextGridX, nextGridY)
         
         
     
