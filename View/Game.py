@@ -42,10 +42,12 @@ screen = pygame.display.set_mode(size)
 
 #Environment Agents/Objects
 grid = Grid(numberOfCellsInColumnsOrRows,numberOfCellsInColumnsOrRows,sizeOfCell,screen,margin,pygame)
+#Always init obstacles before everything else, because you don't want food being init'd on top of obstacle
+# TODO: random agent init to not be on top of obstacle 
+obstacles = [Obstacle(widthOfCell,heightOfCell,BLACK,grid) for i in range(0,numberOfObstacles)]
 predators = [Predator(widthOfCell,heightOfCell,RED,grid) for i in range(0,numberOfPredators)]
 preys = [Prey(widthOfCell,heightOfCell,BLUE,grid) for i in range(0,numberOfPreys)]
 foods = [Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,numberOfFoodObjects)]
-obstacles = [Obstacle(widthOfCell,heightOfCell,BLACK,grid) for i in range(0,numberOfObstacles)]
 
 #Reference to all animat agents in the environment
 environmentAgents = []
@@ -62,6 +64,8 @@ while not done:
     grid.drawGrid(WHITE)               
         
     foodObjectKeys = Food.dictionaryOfFoodObjects.keys()
+    if(len(foodObjectKeys) < 1):
+        foods = [Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,numberOfFoodObjects)]
     [Food.dictionaryOfFoodObjects[foodObjectPosition].update() for foodObjectPosition in foodObjectKeys]
         
     obstacleKeys = Obstacle.dictionaryOfObstacles.keys()

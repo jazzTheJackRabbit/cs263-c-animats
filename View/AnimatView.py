@@ -32,8 +32,8 @@ class Animat(GameObject):
         if(self.isMovementPossible(self._gridX + directionX, self._gridY + directionY)):
             self._gridX += directionX
             self._gridY += directionY
-            self.removeFoodIfAnimatIsOnFood(self._gridX, self._gridY)
-            self.drawGameObjectAtCurrentPosition()
+#             self.removeFoodIfAnimatIsOnFood(self._gridX, self._gridY)
+#             self.drawGameObjectAtCurrentPosition()
     
     def isWithinBounds(self,gridX,gridY):
         if(gridX < 0 or gridX > self._grid._numberOfColumns-1 or gridY < 0 or gridY > self._grid._numberOfRows - 1):
@@ -44,11 +44,7 @@ class Animat(GameObject):
         if(Obstacle.dictionaryOfObstacles.has_key((gridX,gridY))):
             return True
         return False
-    
-    def removeFoodIfAnimatIsOnFood(self,gridX,gridY):
-        if(Food.dictionaryOfFoodObjects.has_key((gridX,gridY))):
-            Food.dictionaryOfFoodObjects.pop((gridX,gridY))        
-    
+        
     def setXYPosition(self,grid_x,grid_y): 
         if(self.isWithinBounds(grid_x,grid_y)):
             self._gridX = grid_x
@@ -67,6 +63,6 @@ class Animat(GameObject):
     
     def update(self):
         self.moveRandomly()
-        GameObject.update(self)
+        self.drawGameObjectAtCurrentPosition()
         
         
