@@ -68,6 +68,9 @@ while not done:
     predator.drawGameObjectAtCurrentPosition()
     prey.drawGameObjectAtCurrentPosition()
     
+    if(prey._gridX == predator._gridX and prey._gridY == predator._gridY):
+        break
+    
     pygame.display.update()
     clock.tick(10)
     
