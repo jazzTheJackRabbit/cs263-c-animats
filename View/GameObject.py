@@ -15,3 +15,6 @@ class GameObject(Cell):
         randomX = random.randrange(0,self._grid._numberOfColumns)
         randomY = random.randrange(0,self._grid._numberOfRows)
         self.setXYPosition(randomX, randomY)
+        
+    def update(self):
+        self.drawGameObjectAtCurrentPosition()
