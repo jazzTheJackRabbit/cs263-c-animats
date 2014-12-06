@@ -1,13 +1,9 @@
 import pygame
-import random
-
 from Grid import Grid
-from AnimatView import Animat
 from Food import Food
 from Obstacle import Obstacle
 from Predator import Predator
 from Prey import Prey
-from GameObject import GameObject
 
 # Define some colors
 BLACK    = (   0,   0,   0)
@@ -44,15 +40,23 @@ screen = pygame.display.set_mode(size)
 grid = Grid(numberOfCellsInColumnsOrRows,numberOfCellsInColumnsOrRows,sizeOfCell,screen,margin,pygame)
 #Always init obstacles before everything else, because you don't want food being init'd on top of obstacle
 # TODO: random agent init to not be on top of obstacle 
-obstacles = [Obstacle(widthOfCell,heightOfCell,BLACK,grid) for i in range(0,numberOfObstacles)]
-predators = [Predator(widthOfCell,heightOfCell,RED,grid) for i in range(0,numberOfPredators)]
-preys = [Prey(widthOfCell,heightOfCell,BLUE,grid) for i in range(0,numberOfPreys)]
-foods = [Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,numberOfFoodObjects)]
+[Obstacle(widthOfCell,heightOfCell,BLACK,grid) for i in range(0,numberOfObstacles)]
+[Predator(widthOfCell,heightOfCell,RED,grid) for i in range(0,numberOfPredators)]
+[Prey(widthOfCell,heightOfCell,BLUE,grid) for i in range(0,numberOfPreys)]
+[Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,numberOfFoodObjects)]
 
 #Reference to all animat agents in the environment
-environmentAgents = []
-[environmentAgents.append(predator) for predator in predators]
-[environmentAgents.append(preys) for prey in preys]
+# environmentAgents = []
+# [environmentAgents.append(predator) for predator in predators]
+# [environmentAgents.append(prey) for singular_prey in prey]
+
+def resetGridReferences():
+    for cellRow in grid.cellMatrix:
+        for cell in cellRow:
+            cell.prey = []
+            cell.predators = []
+            cell.obstacles = []
+            cell.foods = []
 
 while not done:
     # --- Main event loop
@@ -63,19 +67,33 @@ while not done:
     screen.fill(BLACK)    
     grid.drawGrid(WHITE)               
         
-    foodObjectKeys = Food.dictionaryOfFoodObjects.keys()
-    if(len(foodObjectKeys) < 1):
+    resetGridReferences()
+        
+    foodKeys = Food.dictionaryOfFoodObjects.keys()
+    if(len(foodKeys) < 1):
         foods = [Food(widthOfCell,heightOfCell,ORANGE,grid) for i in range(0,numberOfFoodObjects)]
-    [Food.dictionaryOfFoodObjects[foodObjectPosition].update() for foodObjectPosition in foodObjectKeys]
+    for foodObjectPosition in foodKeys:
+        food = Food.dictionaryOfFoodObjects[foodObjectPosition]
+        food.update()
+        grid.cellMatrix[food.gridX][food.gridY].foods.append(food)
         
     obstacleKeys = Obstacle.dictionaryOfObstacles.keys()
-    [Obstacle.dictionaryOfObstacles[obstaclePosition].update() for obstaclePosition in obstacleKeys]
+    for obstaclePosition in obstacleKeys:
+        obstacle = Obstacle.dictionaryOfObstacles[obstaclePosition]
+        obstacle.update()
+        grid.cellMatrix[obstacle.gridX][obstacle.gridY].obstacles.append(obstacle)
     
     predatorKeys = Predator.dictionaryOfPredators.keys()
-    [Predator.dictionaryOfPredators[predatorPosition].update() for predatorPosition in predatorKeys]
+    for predatorPosition in predatorKeys:
+        predator = Predator.dictionaryOfPredators[predatorPosition]
+        predator.update()
+        grid.cellMatrix[predator.gridX][predator.gridY].predators.append(predator)
     
     preyKeys = Prey.dictionaryofPrey.keys()
-    [Prey.dictionaryofPrey[preyPosition].update() for preyPosition in preyKeys]
+    for preyPosition in preyKeys:
+        singular_prey = Prey.dictionaryofPrey[preyPosition]
+        singular_prey.update()
+        grid.cellMatrix[singular_prey.gridX][singular_prey.gridY].prey.append(singular_prey)
     
     pygame.display.update()
     clock.tick(10)

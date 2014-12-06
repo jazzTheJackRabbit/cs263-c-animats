@@ -1,15 +1,18 @@
 from GameObject import GameObject
 from Obstacle import Obstacle
-from Food import Food
 from Actions import Actions
-
 import random
 
 class Animat(GameObject):   
-    
+    #---------------------------------------------------------------------
+    #Initialization
+    #---------------------------------------------------------------------
     def __init__(self,width,height,color,grid):
         GameObject.__init__(self,width,height,color,grid)        
     
+    #---------------------------------------------------------------------
+    #Class Methods
+    #---------------------------------------------------------------------
     def performAction(self,action):
         if action == Actions.MOVE_NORTH:
             self.move(0,1)

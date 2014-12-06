@@ -1,5 +1,7 @@
 class Cell(object):
-    #__init
+    #---------------------------------------------------------------------
+    #Initialization
+    #---------------------------------------------------------------------
     def __init__(self,width,height,margin):
         self.width = width
         self.height = height
@@ -9,6 +11,11 @@ class Cell(object):
         self.gridX = 0
         self.gridY = 0
         self.grid = None
+        
+        self.prey = []
+        self.predators = []
+        self.foods = []
+        self.obstacles = []
                 
     #---------------------------------------------------------------------
     #Instance Variables [Getters and Setters]
@@ -77,6 +84,38 @@ class Cell(object):
     @grid.setter
     def grid(self,value):
         self._grid = value
+        
+    @property
+    def prey(self):
+        return self._prey
+    
+    @prey.setter
+    def prey(self,value):
+        self._prey = value
+        
+    @property
+    def predators(self):
+        return self._predators
+    
+    @predators.setter
+    def predators(self,value):
+        self._predators = value
+        
+    @property
+    def foods(self):
+        return self._foods
+    
+    @foods.setter
+    def foods(self,value):
+        self._foods = value
+    
+    @property
+    def obstacles(self):
+        return self._obstacles
+    
+    @obstacles.setter
+    def obstacles(self,value):
+        self._obstacles = value
     
     #---------------------------------------------------------------------
     #Class Methods
