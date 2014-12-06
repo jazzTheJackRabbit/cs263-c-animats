@@ -1,19 +1,89 @@
-class Cell:
+class Cell(object):
     #__init
     def __init__(self,width,height,margin):
-        self._width = width
-        self._height = height
-        self._margin = margin
-        self._x = 0
-        self._y = 0
-        self._gridX = 0
-        self._gridY = 0
+        self.width = width
+        self.height = height
+        self.margin = margin
+        self.x = 0
+        self.y = 0
+        self.gridX = 0
+        self.gridY = 0
+        self.grid = None
+#         self._contentCount
+#         self._predators = []
+#         self._prey = []
+#         self._foods = []
+#         self._obstacles = []
         
+    @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self,value):
+        self._width = value
+            
+    @property
+    def height(self):
+        return self._height
+    
+    @height.setter
+    def height(self,value):
+        self._height = value
+    
+    @property
+    def margin(self):
+        return self._margin
+    
+    @margin.setter
+    def margin(self,value):
+        self._margin = value
+    
+    @property
+    def x(self):
+        return self._x
+    
+    @x.setter
+    def x(self,value):
+        self._x = value
+    
+    @property
+    def y(self):
+        return self._y
+    
+    @y.setter
+    def y(self,value):
+        self._y = value
+    
+    @property
+    def gridX(self):
+        return self._gridX
+    
+    @gridX.setter
+    def gridX(self,value):
+        self._gridX = value
+    
+    @property
+    def gridY(self):
+        return self._gridY
+    
+    @gridY.setter
+    def gridY(self,value):
+        self._gridY = value
+        
+    @property
+    def grid(self):
+        return self._grid
+    
+    @grid.setter
+    def grid(self,value):
+        self._grid = value
+    
     def setGrid(self,grid):
-        self._grid = grid
+        self.grid = grid
         
     def drawCell(self,color,screen):
-        self._grid._pygame.draw.rect(screen,color,(self._x,self._y,self._width,self._height))
+        self._grid._pygame.draw.rect(screen,color,(self.x,self.y,self.width,self.height))
         
     def drawCellOnGrid(self,grid_x,grid_y,color,screen):
         self.setXYPosition(grid_x, grid_y)        
@@ -24,3 +94,4 @@ class Cell:
         self._gridY = grid_y
         self._x = (grid_x + 1)*self._margin + (grid_x)*self._width
         self._y = (grid_y + 1)*self._margin + (grid_y)*self._height
+            
