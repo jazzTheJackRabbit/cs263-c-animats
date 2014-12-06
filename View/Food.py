@@ -1,14 +1,14 @@
-from GameObject import GameObject
 from Obstacle import Obstacle
+from EnvironmentObject import EnvironmentObject
 
-class Food(GameObject):
+class Food(EnvironmentObject):
     
     dictionaryOfFoodObjects = dict()
     
     def __init__(self,width,height,color,grid):
-        GameObject.__init__(self,width,height,color,grid)
-        self._reward = 0
-        Food.dictionaryOfFoodObjects[(self._gridX,self._gridY)] = self
+        EnvironmentObject.__init__(self,width,height,color,grid)
+        self.reward = 0
+        Food.dictionaryOfFoodObjects[(self.gridX,self.gridY)] = self  
     
     def isPossibleToPlaceAtLocation(self,nextGridX,nextGridY):
         if(self.isWithinBounds(nextGridX, nextGridY) and not self.isOnObstacle(nextGridX, nextGridY)):
@@ -21,7 +21,7 @@ class Food(GameObject):
         return False
     
     def isWithinBounds(self,gridX,gridY):
-        if(gridX < 0 or gridX > self._grid._numberOfColumns-1 or gridY < 0 or gridY > self._grid._numberOfRows - 1):
+        if(gridX < 0 or gridX > self.grid.numberOfColumns-1 or gridY < 0 or gridY > self.grid.numberOfRows - 1):
             return False
         return True
     

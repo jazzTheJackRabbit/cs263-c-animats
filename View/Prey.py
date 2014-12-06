@@ -19,10 +19,10 @@ class Prey(Animat):
         self.lastState = None
         self.lastAction = None
         
-        Prey.dictionaryofPrey[(self._gridX,self._gridY)] = self
+        Prey.dictionaryofPrey[(self.gridX,self.gridY)] = self
     
     def isNextMoveOnPredator(self,gridX,gridY):
-        predatorPositionsInNeighborhood = self.getPredatorPositionsInNeighborhood(self._gridX, self._gridY)
+        predatorPositionsInNeighborhood = self.getPredatorPositionsInNeighborhood(self.gridX, self.gridY)
         #could also check length of the predatorsPositionsInNeighborhood, if it's 0
         if((gridX,gridY) in predatorPositionsInNeighborhood):
             return True
@@ -43,7 +43,7 @@ class Prey(Animat):
         for i in range (-lookAroundDistance,lookAroundDistance + 1):
             for j in range (-lookAroundDistance,lookAroundDistance + 1):
                 if((abs(i) + abs(j) <= lookAroundDistance) and (not (i==0 and j==0))):
-                    neighborPosition = (self._gridX + i, self._gridY + j)
+                    neighborPosition = (self.gridX + i, self.gridY + j)
                     if(self.isWithinBounds(neighborPosition[0],neighborPosition[1])):
                         positionsOfNeighborGrids.append(neighborPosition)
                         
@@ -69,7 +69,7 @@ class Prey(Animat):
         
         if(self.isEatingFood()):
             #Remove the food being eaten
-            Food.dictionaryOfFoodObjects.pop((self._gridX,self._gridY))
+            Food.dictionaryOfFoodObjects.pop((self.gridX,self.gridY))
             self.fed += 1
             reward = 50            
         
@@ -85,7 +85,7 @@ class Prey(Animat):
         self.drawGameObjectAtCurrentPosition()
     
     def isBeingEatenByPredator(self):
-        return self.isCellOnAnyPredator((self._gridX,self._gridY))
+        return self.isCellOnAnyPredator((self.gridX,self.gridY))
     
     def isCellOnAnyPredator(self,gridCoordinatesOfCell):
         predatorKeys = Predator.dictionaryOfPredators.keys() #Keys are tuples and Values are references to the actual predator object
@@ -108,7 +108,7 @@ class Prey(Animat):
         return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])
     
     def isEatingFood(self):
-        return self.isCellOnAnyFood((self._gridX,self._gridY))
+        return self.isCellOnAnyFood((self.gridX,self.gridY))
     
     def isCellOnAnyFood(self,gridCoordinatesForCell):
         if(Food.dictionaryOfFoodObjects.has_key(gridCoordinatesForCell)):            
@@ -121,28 +121,28 @@ class Prey(Animat):
         return False
     
     def move(self, directionX, directionY):
-        oldXPosition = self._gridX
-        oldYPosition = self._gridY
+        oldXPosition = self.gridX
+        oldYPosition = self.gridY
         Animat.move(self, directionX, directionY)
         Prey.dictionaryofPrey.pop((oldXPosition,oldYPosition))
-        while Prey.dictionaryofPrey.has_key((self._gridX,self._gridY)):
+        while Prey.dictionaryofPrey.has_key((self.gridX,self.gridY)):
             Animat.move(self, directionX, directionY)
-        Prey.dictionaryofPrey[(self._gridX,self._gridY)] = self;
+        Prey.dictionaryofPrey[(self.gridX,self.gridY)] = self;
         
     def respawnAtRandomPosition(self):
-        oldXPosition = self._gridX
-        oldYPosition = self._gridY
+        oldXPosition = self.gridX
+        oldYPosition = self.gridY
         
-        randomX = random.randrange(0,self._grid._numberOfColumns)
-        randomY = random.randrange(0,self._grid._numberOfRows)
+        randomX = random.randrange(0,self.grid.numberOfColumns)
+        randomY = random.randrange(0,self.grid.numberOfRows)
         self.setXYPosition(randomX, randomY)
                 
         Prey.dictionaryofPrey.pop((oldXPosition,oldYPosition))
-        while Prey.dictionaryofPrey.has_key((self._gridX,self._gridY)):
-            randomX = random.randrange(0,self._grid._numberOfColumns)
-            randomY = random.randrange(0,self._grid._numberOfRows)
+        while Prey.dictionaryofPrey.has_key((self.gridX,self.gridY)):
+            randomX = random.randrange(0,self.grid.numberOfColumns)
+            randomY = random.randrange(0,self.grid.numberOfRows)
             self.setXYPosition(randomX, randomY)
-        Prey.dictionaryofPrey[(self._gridX,self._gridY)] = self        
+        Prey.dictionaryofPrey[(self.gridX,self.gridY)] = self        
         
    
         

@@ -9,12 +9,11 @@ class Cell(object):
         self.gridX = 0
         self.gridY = 0
         self.grid = None
-#         self._contentCount
-#         self._predators = []
-#         self._prey = []
-#         self._foods = []
-#         self._obstacles = []
-        
+                
+    #---------------------------------------------------------------------
+    #Instance Variables [Getters and Setters]
+    #---------------------------------------------------------------------
+    
     @property
     def width(self):
         return self._width
@@ -79,11 +78,15 @@ class Cell(object):
     def grid(self,value):
         self._grid = value
     
+    #---------------------------------------------------------------------
+    #Class Methods
+    #---------------------------------------------------------------------
+    
     def setGrid(self,grid):
         self.grid = grid
         
     def drawCell(self,color,screen):
-        self._grid._pygame.draw.rect(screen,color,(self.x,self.y,self.width,self.height))
+        self.grid.pygame.draw.rect(screen,color,(self.x,self.y,self.width,self.height))
         
     def drawCellOnGrid(self,grid_x,grid_y,color,screen):
         self.setXYPosition(grid_x, grid_y)        
