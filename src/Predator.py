@@ -42,7 +42,10 @@ class Predator(Animat):
         if(self.isEatingPrey()):
             #Prey re-spawns itself randomly, if it gets eaten
             self.fed += 1
-            reward = 50                        
+            reward = 50            
+        
+        elif(self.hasPreyInNeighborhood()):
+            reward = 20            
         
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
@@ -66,7 +69,13 @@ class Predator(Animat):
             else:
                 return 0
         
-        return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])
+        return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])    
+    
+    def hasPreyInNeighborhood(self):
+        preyInNeighborHood = self.getPreyPositionsInNeighborhood()
+        if(len(preyInNeighborHood) > 0):
+            return True
+        return False
     
     def isEatingPrey(self):
         return self.isCellOnAnyPrey((self.gridX,self.gridY))

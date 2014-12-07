@@ -11,6 +11,7 @@ class Grid:
         self.cellWidth = sizeOfCell
         self.cellHeight = sizeOfCell
         self.cellMatrix = []
+        self.shouldDrawScreen = False
         self.createGrid()
        
     #---------------------------------------------------------------------

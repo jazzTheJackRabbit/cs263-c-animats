@@ -125,7 +125,8 @@ class Cell(object):
         self.grid = grid
         
     def drawCell(self,color,screen):
-        self.grid.pygame.draw.rect(screen,color,(self.x,self.y,self.width,self.height))
+        if(self.grid.shouldDrawScreen):
+            self.grid.pygame.draw.rect(screen,color,(self.x,self.y,self.width,self.height))
         
     def drawCellOnGrid(self,grid_x,grid_y,color,screen):
         self.setXYPosition(grid_x, grid_y)        

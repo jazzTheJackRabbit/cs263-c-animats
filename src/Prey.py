@@ -52,11 +52,14 @@ class Prey(Animat):
             self.respawnAtRandomPosition()
             return
         
+        if(self.hasPredatorInNeighborhood()):
+            reward = -20
+        
         if(self.isEatingFood()):
             #Remove the food being eaten
             Food.dictionaryOfFoodObjects.pop((self.gridX,self.gridY))
             self.fed += 1
-            reward = 50            
+            reward = 200            
         
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
@@ -67,7 +70,13 @@ class Prey(Animat):
         self.lastAction = action
         
         self.performAction(action)
-        self.drawGameObjectAtCurrentPosition()
+        self.drawGameObjectAtCurrentPosition()    
+    
+    def hasPredatorInNeighborhood(self):
+        predatorsInNeighborHood = self.getPredatorPositionsInNeighborhood()
+        if(len(predatorsInNeighborHood) > 0):
+            return True
+        return False
     
     def isBeingEatenByPredator(self):
         return self.isCellOnAnyPredator((self.gridX,self.gridY))

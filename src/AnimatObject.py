@@ -52,20 +52,20 @@ class Animat(GameObject):
     def performAction(self,action):
         if action == Actions.MOVE_NORTH:
             self.move(0,1)
-        elif action == Actions.MOVE_NORTHEAST:
-            self.move(1,1) 
+#         elif action == Actions.MOVE_NORTHEAST:
+#             self.move(1,1) 
         elif action == Actions.MOVE_EAST:
             self.move(1,0)
-        elif action == Actions.MOVE_SOUTHEAST:
-            self.move(1,-1)
+#         elif action == Actions.MOVE_SOUTHEAST:
+#             self.move(1,-1)
         elif action == Actions.MOVE_SOUTH:
             self.move(0,-1)  
-        elif action == Actions.MOVE_SOUTHWEST:
-            self.move(-1,-1)
+#         elif action == Actions.MOVE_SOUTHWEST:
+#             self.move(-1,-1)
         elif action == Actions.MOVE_WEST:
             self.move(-1,0)
-        elif action == Actions.MOVE_NORTHWEST:
-            self.move(-1,1)          
+#         elif action == Actions.MOVE_NORTHWEST:
+#             self.move(-1,1)          
         
     def move(self,directionX,directionY):
         if(self.isMovementPossible(self.gridX + directionX, self.gridY + directionY)):

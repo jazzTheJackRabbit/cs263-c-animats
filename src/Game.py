@@ -28,8 +28,8 @@ sizeOfCell = 20
 
 numberOfPreys = 1
 numberOfPredators = 1
-numberOfFoodObjects = 10
-numberOfObstacles = 25
+numberOfFoodObjects = 1
+numberOfObstacles = 5
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
 size = (sizeCalculation, sizeCalculation)
@@ -57,12 +57,8 @@ def resetGridReferences():
             cell.obstacles = []
             cell.foods = []
 
-while not done:
-    # --- Main event loop
-    for event in pygame.event.get(): 
-        if event.type == pygame.QUIT: 
-            done = True 
- 
+def worldUpdate(showDisplay):
+                        
     screen.fill(BLACK)    
     grid.drawGrid(WHITE)               
         
@@ -90,13 +86,42 @@ while not done:
     
     preyKeys = Prey.dictionaryOfPrey.keys()
     for preyPosition in preyKeys:
-        singular_prey = Prey.dictionaryOfPrey[preyPosition]
-        
-#         preyController = PreyController(singular_prey)
+        singular_prey = Prey.dictionaryOfPrey[preyPosition]        
         grid.cellMatrix[singular_prey.gridX][singular_prey.gridY].prey = singular_prey
         singular_prey.update()        
     
-    pygame.display.update()
-    clock.tick(10)
+    if(showDisplay):
+        pygame.display.update()
+        clock.tick(10)       
 
+worldAge = 0
+endAge = worldAge + 150000
+while not done and worldAge < endAge:
+    # --- Main event loop      
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT: 
+            done = True            
+    
+    worldUpdate(False)
+    
+    if worldAge % 10000 == 0:
+        preyKeys = Prey.dictionaryOfPrey.keys()
+        for preyPosition in preyKeys:
+            singular_prey = Prey.dictionaryOfPrey[preyPosition]                    
+            mouse = singular_prey
+            print "{:d}, e: {:0.2f}, W: {:d}, L: {:d}"\
+                .format(worldAge, mouse.ai.epsilon, mouse.fed, mouse.eaten)
+            mouse.eaten = 0
+            mouse.fed = 0
+            
+    worldAge += 1
+    
+while not done:
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT: 
+            done = True   
+    
+    grid.shouldDrawScreen = True    
+    worldUpdate(grid.shouldDrawScreen)
+    
 pygame.quit()
