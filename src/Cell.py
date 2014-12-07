@@ -12,10 +12,10 @@ class Cell(object):
         self.gridY = 0
         self.grid = None
         
-        self.prey = []
-        self.predators = []
-        self.foods = []
-        self.obstacles = []
+        self.prey = None
+        self.predator = None
+        self.food = None
+        self.obstacle = None
                 
     #---------------------------------------------------------------------
     #Instance Variables [Getters and Setters]
@@ -94,28 +94,28 @@ class Cell(object):
         self._prey = value
         
     @property
-    def predators(self):
-        return self._predators
+    def predator(self):
+        return self._predator
     
-    @predators.setter
-    def predators(self,value):
-        self._predators = value
+    @predator.setter
+    def predator(self,value):
+        self._predator = value
         
     @property
-    def foods(self):
-        return self._foods
+    def food(self):
+        return self._food
     
-    @foods.setter
-    def foods(self,value):
-        self._foods = value
+    @food.setter
+    def food(self,value):
+        self._food = value
     
     @property
-    def obstacles(self):
-        return self._obstacles
+    def obstacle(self):
+        return self._obstacle
     
-    @obstacles.setter
-    def obstacles(self,value):
-        self._obstacles = value
+    @obstacle.setter
+    def obstacle(self,value):
+        self._obstacle = value
     
     #---------------------------------------------------------------------
     #Class Methods

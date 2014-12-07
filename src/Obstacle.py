@@ -1,4 +1,3 @@
-from GameObject import GameObject
 from EnvironmentObject import EnvironmentObject
 
 class Obstacle(EnvironmentObject):

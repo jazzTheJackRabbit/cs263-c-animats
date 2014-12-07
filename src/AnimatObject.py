@@ -9,6 +9,42 @@ class Animat(GameObject):
     #---------------------------------------------------------------------
     def __init__(self,width,height,color,grid):
         GameObject.__init__(self,width,height,color,grid)        
+        self.ai = None        
+        self.fed = 0
+        self.lastState = None
+        self.lastAction = None        
+    
+    @property
+    def ai(self):
+        return self._ai
+    
+    @ai.setter
+    def ai(self,value):
+        self._ai = value
+    
+    @property
+    def fed(self):
+        return self._fed
+    
+    @fed.setter
+    def fed(self,value):
+        self._fed = value
+        
+    @property
+    def lastState(self):
+        return self._lastState
+    
+    @lastState.setter
+    def lastState(self,value):
+        self._lastState = value
+        
+    @property
+    def lastAction(self):
+        return self._lastAction
+    
+    @lastAction.setter
+    def lastAction(self,value):
+        self._lastAction = value
     
     #---------------------------------------------------------------------
     #Class Methods
