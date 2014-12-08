@@ -1,5 +1,12 @@
+from matplotlib.hatch import NorthEastHatch
 class Actions:
     directions = 4
+    looks = 4
+    
+    LOOK_NORTH = 0
+    LOOK_EAST = 1
+    LOOK_WEST = 2
+    LOOK_SOUTH = 3
     
 #     MOVE_NORTH = 0
 #     MOVE_NORTHEAST = 1

@@ -2,6 +2,7 @@ from GameObject import GameObject
 from Obstacle import Obstacle
 from Actions import Actions
 import random
+from matplotlib.hatch import SouthEastHatch
 
 class Animat(GameObject):   
     #---------------------------------------------------------------------
@@ -12,7 +13,8 @@ class Animat(GameObject):
         self.ai = None        
         self.fed = 0
         self.lastState = None
-        self.lastAction = None        
+        self.lastAction = None   
+        self.direction = None     
     
     @property
     def ai(self):
@@ -45,6 +47,14 @@ class Animat(GameObject):
     @lastAction.setter
     def lastAction(self,value):
         self._lastAction = value
+        
+    @property 
+    def direction(self):
+        return self._direction
+    
+    @direction.setter
+    def direction(self,value):
+        self._direction = value
     
     #---------------------------------------------------------------------
     #Class Methods
@@ -52,25 +62,46 @@ class Animat(GameObject):
     def performAction(self,action):
         if action == Actions.MOVE_NORTH:
             self.move(0,1)
+            if self.direction == Actions.LOOK_SOUTH:
+                self.direction(Actions.LOOK_NORTH)
+                
 #         elif action == Actions.MOVE_NORTHEAST:
 #             self.move(1,1) 
         elif action == Actions.MOVE_EAST:
             self.move(1,0)
+            if self.direction == Actions.LOOK_NORTH:
+                self.direction(Actions.LOOK_EAST)
+            elif self.direction == Actions.LOOK_SOUTH:
+                self.direction(Actions.LOOK_WEST)
+            elif self.direction == Actions.LOOK_WEST:
+                self.direction(Actions.LOOK_NORTH)
+            else:
+                self.direction(Actions.LOOK_SOUTH)
 #         elif action == Actions.MOVE_SOUTHEAST:
 #             self.move(1,-1)
         elif action == Actions.MOVE_SOUTH:
-            self.move(0,-1)  
+            self.move(0,-1) 
+            if self.direction() == Actions.LOOK_NORTH:
+                self.direction(Actions.LOOK_NORTH) 
 #         elif action == Actions.MOVE_SOUTHWEST:
 #             self.move(-1,-1)
         elif action == Actions.MOVE_WEST:
             self.move(-1,0)
+            if self.direction() == Actions.LOOK_NORTH:
+                self.direction(Actions.LOOK_WEST)
+            elif self.direction() == Actions.LOOK_SOUTH:
+                self.direction(Actions.LOOK_EAST)
+            elif self.direction() == Actions.LOOK_WEST:
+                self.direction(Actions.LOOK_SOUTH)
+            else:
+                self.direction(Actions.LOOK_NORTH)
 #         elif action == Actions.MOVE_NORTHWEST:
 #             self.move(-1,1)          
         
-    def move(self,directionX,directionY):
-        if(self.isMovementPossible(self.gridX + directionX, self.gridY + directionY)):
-            self.gridX += directionX
-            self.gridY += directionY
+    def move(self,moveX,moveY):
+        if(self.isMovementPossible(self.gridX + moveX, self.gridY + moveY)):
+            self.gridX += moveX
+            self.gridY += moveY
 #             self.removeFoodIfAnimatIsOnFood(self._gridX, self._gridY)
 #             self.drawGameObjectAtCurrentPosition()
     
@@ -93,7 +124,9 @@ class Animat(GameObject):
                 
     def moveRandomly(self):
         random_movement = random.randrange(0,8)  
-        self.performAction(random_movement)       
+        self.performAction(random_movement)  
+        direction = random.randrange(0,4)
+        self.direction(direction)
             
     def isMovementPossible(self,nextGridX,nextGridY):
         if(self.isWithinBounds(nextGridX, nextGridY) and not self.isOnObstacle(nextGridX, nextGridY)):
