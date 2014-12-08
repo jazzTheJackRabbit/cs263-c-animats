@@ -8,13 +8,14 @@ class Cell(object):
         self.margin = margin
         self.x = 0
         self.y = 0
-        self.gridX = 0
+        self.gridX = 0                                                                      
         self.gridY = 0
         self.grid = None
         
         self.prey = None
         self.predator = None
         self.food = None
+        self.foodIntensity = 0
         self.obstacle = None
                 
     #---------------------------------------------------------------------
@@ -116,6 +117,14 @@ class Cell(object):
     @obstacle.setter
     def obstacle(self,value):
         self._obstacle = value
+        
+    @property
+    def foodIntensity(self):
+        return self._foodIntensity
+    
+    @foodIntensity.setter
+    def foodIntensity(self,value):
+        self._foodIntensity = value
     
     #---------------------------------------------------------------------
     #Class Methods

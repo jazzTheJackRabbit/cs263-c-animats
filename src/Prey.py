@@ -117,12 +117,16 @@ class Prey(Animat):
     #TODO: Requires massive change for multiple Prey
     def move(self, directionX, directionY):
         oldXPosition = self.gridX
-        oldYPosition = self.gridY
-        Animat.move(self, directionX, directionY)
-        Prey.dictionaryOfPrey.pop((oldXPosition,oldYPosition))
-        while Prey.dictionaryOfPrey.has_key((self.gridX,self.gridY)):
-            Animat.move(self, directionX, directionY)
-        Prey.dictionaryOfPrey[(self.gridX,self.gridY)] = self;
+        oldYPosition = self.gridY        
+        nextXPosition = self.gridX + directionX
+        nextYPosition = self.gridY + directionY
+        if(self.isMovementPossible(nextXPosition, nextYPosition)):
+            #If prey is in new position     
+            if(not Prey.dictionaryOfPrey.has_key((nextXPosition,nextYPosition))):
+                #Another Prey is not on the next Position, so valid movement
+                Animat.move(self, directionX, directionY)
+                Prey.dictionaryOfPrey.pop((oldXPosition,oldYPosition))
+                Prey.dictionaryOfPrey[(self.gridX,self.gridY)] = self;
         
     def respawnAtRandomPosition(self):
         oldXPosition = self.gridX

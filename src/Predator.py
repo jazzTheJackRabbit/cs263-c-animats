@@ -100,9 +100,13 @@ class Predator(Animat):
     #TODO: Requires massive change for multiple Predators
     def move(self, directionX, directionY):
         oldXPosition = self.gridX
-        oldYPosition = self.gridY
-        Animat.move(self, directionX, directionY)
-        Predator.dictionaryOfPredators.pop((oldXPosition,oldYPosition))
-        while Predator.dictionaryOfPredators.has_key((self.gridX,self.gridY)):
-            Animat.move(self, directionX, directionY)
-        Predator.dictionaryOfPredators[(self.gridX,self.gridY)] = self;    
+        oldYPosition = self.gridY        
+        nextXPosition = self.gridX + directionX
+        nextYPosition = self.gridY + directionY
+        if(self.isMovementPossible(nextXPosition, nextYPosition)):
+            #If prey is in new position     
+            if(not Predator.dictionaryOfPredators.has_key((nextXPosition,nextYPosition))):
+                #Another Prey is not on the next Position, so valid movement
+                Animat.move(self, directionX, directionY)
+                Predator.dictionaryOfPredators.pop((oldXPosition,oldYPosition))
+                Predator.dictionaryOfPredators[(self.gridX,self.gridY)] = self;    

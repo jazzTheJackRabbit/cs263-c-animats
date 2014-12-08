@@ -18,7 +18,7 @@ pygame.init()
 pygame.display.set_caption("My Game") 
 clock = pygame.time.Clock()
 
-numberOfCellsInColumnsOrRows = 10
+numberOfCellsInColumnsOrRows = 15
 margin = 5
 done = False
 
@@ -26,9 +26,9 @@ widthOfCell = 20
 heightOfCell = 20
 sizeOfCell = 20
 
-numberOfPreys = 1
-numberOfPredators = 1
-numberOfFoodObjects = 1
+numberOfPreys = 4
+numberOfPredators = 2
+numberOfFoodObjects = 8
 numberOfObstacles = 5
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
@@ -102,7 +102,8 @@ while not done and worldAge < endAge:
         if event.type == pygame.QUIT: 
             done = True            
     
-    worldUpdate(False)
+    grid.shouldDrawScreen = False  
+    worldUpdate(grid.shouldDrawScreen)
     
     if worldAge % 10000 == 0:
         preyKeys = Prey.dictionaryOfPrey.keys()
