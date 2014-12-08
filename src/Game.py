@@ -28,7 +28,7 @@ sizeOfCell = 20
 
 numberOfPreys = 4
 numberOfPredators = 2
-numberOfFoodObjects = 8
+numberOfFoodObjects = 1
 numberOfObstacles = 5
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
@@ -71,6 +71,9 @@ def worldUpdate(showDisplay):
         food = Food.dictionaryOfFoodObjects[foodObjectPosition]
         food.update()
         grid.cellMatrix[food.gridX][food.gridY].food = food
+        if not food.gradientsCreated: 
+            food.createFoodGradientsInNeighbors()
+            food.gradientsCreated = True
         
     obstacleKeys = Obstacle.dictionaryOfObstacles.keys()
     for obstaclePosition in obstacleKeys:
