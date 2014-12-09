@@ -18,7 +18,7 @@ pygame.init()
 pygame.display.set_caption("My Game") 
 clock = pygame.time.Clock()
 
-numberOfCellsInColumnsOrRows = 15
+numberOfCellsInColumnsOrRows = 10
 margin = 5
 done = False
 
@@ -27,9 +27,9 @@ heightOfCell = 20
 sizeOfCell = 20
 
 numberOfPreys = 4
-numberOfPredators = 2
-numberOfFoodObjects = 1
-numberOfObstacles = 5
+numberOfPredators = 3
+numberOfFoodObjects = 4
+numberOfObstacles = 0
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
 size = (sizeCalculation, sizeCalculation)
@@ -71,9 +71,8 @@ def worldUpdate(showDisplay):
         food = Food.dictionaryOfFoodObjects[foodObjectPosition]
         food.update()
         grid.cellMatrix[food.gridX][food.gridY].food = food
-        if not food.gradientsCreated: 
-            food.createFoodGradientsInNeighbors()
-            food.gradientsCreated = True
+        food.createFoodGradientsInNeighbors(3)
+        food.gradientsCreated = True
         
     obstacleKeys = Obstacle.dictionaryOfObstacles.keys()
     for obstaclePosition in obstacleKeys:
@@ -105,7 +104,7 @@ while not done and worldAge < endAge:
         if event.type == pygame.QUIT: 
             done = True            
     
-    grid.shouldDrawScreen = False  
+    grid.shouldDrawScreen = True  
     worldUpdate(grid.shouldDrawScreen)
     
     if worldAge % 10000 == 0:

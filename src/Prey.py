@@ -57,7 +57,11 @@ class Prey(Animat):
         
         if(self.isEatingFood()):
             #Remove the food being eaten
-            Food.dictionaryOfFoodObjects.pop((self.gridX,self.gridY))
+            eatenFood = Food.dictionaryOfFoodObjects.pop((self.gridX,self.gridY))
+            eatenFood.gotEaten()
+            eatenFoodCell = self.grid.cellMatrix[eatenFood.gridX][eatenFood.gridY]
+            eatenFoodCell.foodIntensity = 0
+            eatenFood = None
             self.fed += 1
             reward = 200            
         
