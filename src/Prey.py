@@ -40,10 +40,13 @@ class Prey(Animat):
         state = self.calculateState()
         reward = -1
         
-        #Check if the animat has been eaten by any of the predators
+        #Check if the animat has been eaten by any of the predators            
+        if(self.rewardForProximityToFood()):
+            reward =  -1*(1 - self.rewardForProximityToFood())
+                
         if(self.isBeingEatenByPredator()):
             self.eaten += 1
-            reward = -100
+            reward = -200
             if self.lastState is not None:
                 self.ai.learn(self.lastState,self.lastAction,reward,state)
                 
@@ -53,7 +56,7 @@ class Prey(Animat):
             return
         
         if(self.hasPredatorInNeighborhood()):
-            reward = -20
+            reward = -40
         
         if(self.isEatingFood()):
             #Remove the food being eaten
@@ -63,7 +66,8 @@ class Prey(Animat):
             eatenFoodCell.foodIntensity = 0
             eatenFood = None
             self.fed += 1
-            reward = 200            
+            reward = 100              
+                  
         
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
@@ -146,6 +150,10 @@ class Prey(Animat):
             randomY = random.randrange(0,self.grid.numberOfRows)
             self.setXYPosition(randomX, randomY)
         Prey.dictionaryOfPrey[(self.gridX,self.gridY)] = self        
+        
+    def rewardForProximityToFood(self):        
+        cell = self.grid.cellMatrix[self.gridX][self.gridY]        
+        return cell.foodIntensity
         
    
         

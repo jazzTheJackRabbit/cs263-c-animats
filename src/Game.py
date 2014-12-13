@@ -104,7 +104,7 @@ while not done and worldAge < endAge:
         if event.type == pygame.QUIT: 
             done = True            
     
-    grid.shouldDrawScreen = True  
+    grid.shouldDrawScreen = False  
     worldUpdate(grid.shouldDrawScreen)
     
     if worldAge % 10000 == 0:
