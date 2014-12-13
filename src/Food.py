@@ -91,7 +91,8 @@ class Food(EnvironmentObject):
         blueGradientValue = math.ceil(255 * foodIntensityAtCell)
         color = (redGradientValue,255 - greenGradientValue,255 - blueGradientValue)        
         if(foodIntensityAtCell >= cell.foodIntensity):
-            self.grid.pygame.draw.rect(self.grid.screen,color,(cell.x,cell.y,cell.width,cell.height))
+            if(self.grid.shouldDrawScreen):
+                self.grid.pygame.draw.rect(self.grid.screen,color,(cell.x,cell.y,cell.width,cell.height))
             cell.foodIntensity = foodIntensityAtCell
             
     def gaussianFn(self,x):
