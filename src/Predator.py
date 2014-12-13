@@ -38,23 +38,26 @@ class Predator(Animat):
         state = self.calculateState()
         reward = -1
         
-        #Check if the animat has been eaten by any of the predators                 
+        #Check if the animat has been eaten by any of the predators
+        if (self.gridX,self.gridY) in self.previousPositionTuples:
+            reward += -20
+        
+        elif(self.hasPreyInNeighborhood()):
+            reward = 20
+                             
         if(self.isEatingPrey()):
             #Prey re-spawns itself randomly, if it gets eaten
             self.fed += 1
             reward = 50            
-        
-        elif(self.hasPreyInNeighborhood()):
-            reward = 20            
-        
+                
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
             
         state = self.calculateState()
         action = self.ai.chooseAction(state)
         self.lastState = state
-        self.lastAction = action
-        
+        self.lastAction = action            
+        self.setPrevious2Positions()
         self.performAction(action)
         self.drawGameObjectAtCurrentPosition()
     

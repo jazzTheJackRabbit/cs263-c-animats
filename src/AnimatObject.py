@@ -12,7 +12,8 @@ class Animat(GameObject):
         self.ai = None        
         self.fed = 0
         self.lastState = None
-        self.lastAction = None        
+        self.lastAction = None       
+        self.previousPositionTuples = [] 
     
     @property
     def ai(self):
@@ -46,6 +47,22 @@ class Animat(GameObject):
     def lastAction(self,value):
         self._lastAction = value
     
+    @property
+    def previousPositionX(self):
+        return self._previousPositionX
+    
+    @previousPositionX.setter
+    def previousPositionX(self,value):
+        self._previousPositionX = value
+        
+    @property
+    def previousPositionY(self):
+        return self._previousPositionY
+    
+    @previousPositionY.setter
+    def previousPositionY(self,value):
+        self._previousPositionY = value
+    
     #---------------------------------------------------------------------
     #Class Methods
     #---------------------------------------------------------------------
@@ -66,6 +83,11 @@ class Animat(GameObject):
             self.move(-1,0)
 #         elif action == Actions.MOVE_NORTHWEST:
 #             self.move(-1,1)          
+
+    def setPrevious2Positions(self):
+        if(len(self.previousPositionTuples) == 2):
+            self.previousPositionTuples.pop(0)
+        self.previousPositionTuples.append((self.gridX,self.gridY))
         
     def move(self,directionX,directionY):
         if(self.isMovementPossible(self.gridX + directionX, self.gridY + directionY)):

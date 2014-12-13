@@ -14,9 +14,9 @@ class Prey(Animat):
     def __init__(self,width,height,color,grid):
         Animat.__init__(self, width, height, color, grid)
         self.ai = qlearn.QLearn(actions=range(Actions.directions),alpha=0.1, gamma=0.9, epsilon=0.1)
-        self.eaten = 0
+        self.eaten = 0        
         Prey.dictionaryOfPrey[(self.gridX,self.gridY)] = self
-            
+        
     def getPredatorPositionsInNeighborhood(self):
         neighborGrids = self.getNeighborGridCoordinates()
         predatorPositionsInNeighborhood = []
@@ -38,12 +38,19 @@ class Prey(Animat):
             
     def update(self):
         state = self.calculateState()
-        reward = -1
+        reward = -20
         
-        #Check if the animat has been eaten by any of the predators            
+        #Check if the animat is on a food Intensity gradient                
         if(self.rewardForProximityToFood()):
             reward =  -1*(1 - self.rewardForProximityToFood())
-                
+            
+        if(self.hasPredatorInNeighborhood()):
+            reward = -40
+            
+        if (self.gridX,self.gridY) in self.previousPositionTuples:
+            reward += -20
+            
+        #Check if the animat has been eaten by any of the predators        
         if(self.isBeingEatenByPredator()):
             self.eaten += 1
             reward = -200
@@ -55,9 +62,6 @@ class Prey(Animat):
             self.respawnAtRandomPosition()
             return
         
-        if(self.hasPredatorInNeighborhood()):
-            reward = -40
-        
         if(self.isEatingFood()):
             #Remove the food being eaten
             eatenFood = Food.dictionaryOfFoodObjects.pop((self.gridX,self.gridY))
@@ -67,8 +71,7 @@ class Prey(Animat):
             eatenFood = None
             self.fed += 1
             reward = 100              
-                  
-        
+            
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
             
@@ -76,7 +79,7 @@ class Prey(Animat):
         action = self.ai.chooseAction(state)
         self.lastState = state
         self.lastAction = action
-        
+        self.setPrevious2Positions()
         self.performAction(action)
         self.drawGameObjectAtCurrentPosition()    
     
