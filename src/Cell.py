@@ -12,8 +12,9 @@ class Cell(object):
         self.gridY = 0
         self.grid = None
         
-        self.prey = None
         self.predator = None
+        self.preyAdult = None        
+        self.preyOffspring = None
         self.food = None
         self.foodIntensity = 0
         self.obstacle = None
@@ -87,14 +88,6 @@ class Cell(object):
         self._grid = value
         
     @property
-    def prey(self):
-        return self._prey
-    
-    @prey.setter
-    def prey(self,value):
-        self._prey = value
-        
-    @property
     def predator(self):
         return self._predator
     
@@ -125,6 +118,22 @@ class Cell(object):
     @foodIntensity.setter
     def foodIntensity(self,value):
         self._foodIntensity = value
+        
+    @property
+    def preyAdult(self):
+        return self._preyAdult
+    
+    @preyAdult.setter
+    def preyAdult(self,value):
+        self._preyAdult = value
+        
+    @property
+    def preyOffspring(self):
+        return self._preyOffspring
+    
+    @preyOffspring.setter
+    def preyOffspring(self,value):
+        self._preyOffspring = value
     
     #---------------------------------------------------------------------
     #Class Methods

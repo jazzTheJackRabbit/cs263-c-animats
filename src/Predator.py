@@ -1,5 +1,4 @@
-import Prey
-import random
+import PreyAdult
 import qlearn_mod_random as qlearn
 from AnimatObject import Animat
 from Food import Food
@@ -26,11 +25,11 @@ class Predator(Animat):
                         positionsOfNeighborGrids.append(neighborPosition)
         return positionsOfNeighborGrids
     
-    def getPreyPositionsInNeighborhood(self):
+    def getPreyAdultPositionsInNeighborhood(self):
         neighborGrids = self.getNeighborGridCoordinates()
         preyPositionsInNeighborhood = []
         for neighborGrid in neighborGrids:
-            if(Prey.Prey.dictionaryOfPrey.has_key(neighborGrid)):
+            if(PreyAdult.PreyAdult.dictionaryOfPreyAdults.has_key(neighborGrid)):
                 preyPositionsInNeighborhood.append(neighborGrid)
         return preyPositionsInNeighborhood    
         
@@ -42,11 +41,11 @@ class Predator(Animat):
         if (self.gridX,self.gridY) in self.previousPositionTuples:
             reward += -20
         
-        elif(self.hasPreyInNeighborhood()):
+        elif(self.hasPreyAdultInNeighborhood()):
             reward = 20
                              
-        if(self.isEatingPrey()):
-            #Prey re-spawns itself randomly, if it gets eaten
+        if(self.isEatingPreyAdult()):
+            #PreyAdult re-spawns itself randomly, if it gets eaten
             self.fed += 1
             reward = 50            
                 
@@ -63,7 +62,7 @@ class Predator(Animat):
     
     def calculateState(self):
         def stateValueForNeighbor(neighborCellCoordinates):
-            if self.isCellOnAnyPrey(neighborCellCoordinates):
+            if self.isCellOnAnyPreyAdult(neighborCellCoordinates):
                 return 3
             elif self.isCellOnAnyFood(neighborCellCoordinates):
                 return 2
@@ -74,17 +73,17 @@ class Predator(Animat):
         
         return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])    
     
-    def hasPreyInNeighborhood(self):
-        preyInNeighborHood = self.getPreyPositionsInNeighborhood()
+    def hasPreyAdultInNeighborhood(self):
+        preyInNeighborHood = self.getPreyAdultPositionsInNeighborhood()
         if(len(preyInNeighborHood) > 0):
             return True
         return False
     
-    def isEatingPrey(self):
-        return self.isCellOnAnyPrey((self.gridX,self.gridY))
+    def isEatingPreyAdult(self):
+        return self.isCellOnAnyPreyAdult((self.gridX,self.gridY))
         
-    def isCellOnAnyPrey(self,gridCoordinatesOfCell):
-        preyKeys = Prey.Prey.dictionaryOfPrey.keys() #Keys are tuples and Values are references to the actual prey object
+    def isCellOnAnyPreyAdult(self,gridCoordinatesOfCell):
+        preyKeys = PreyAdult.PreyAdult.dictionaryOfPreyAdults.keys() #Keys are tuples and Values are references to the actual prey object
         for preyPosition in preyKeys:
             if(gridCoordinatesOfCell == preyPosition):
                 return True
@@ -109,7 +108,7 @@ class Predator(Animat):
         if(self.isMovementPossible(nextXPosition, nextYPosition)):
             #If prey is in new position     
             if(not Predator.dictionaryOfPredators.has_key((nextXPosition,nextYPosition))):
-                #Another Prey is not on the next Position, so valid movement
+                #Another PreyAdult is not on the next Position, so valid movement
                 Animat.move(self, directionX, directionY)
                 Predator.dictionaryOfPredators.pop((oldXPosition,oldYPosition))
                 Predator.dictionaryOfPredators[(self.gridX,self.gridY)] = self;    
