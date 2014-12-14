@@ -99,7 +99,7 @@ class Food(EnvironmentObject):
         pi = 22/7
         sigma = 0.8
         y = 2*(1/(sigma * math.sqrt(2*pi)))*math.exp(-(math.pow(x, 2))/(2*math.pow(sigma,2)))
-        return y
+        return round(y,2)
     
     def gotEaten(self):
         cellPositionsInNeighborhood = self.getNeighborGridCoordinates(self.foodStrengthRounds)        

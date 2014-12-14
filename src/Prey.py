@@ -94,16 +94,30 @@ class Prey(Animat):
     
     def calculateState(self):
         def stateValueForNeighbor(neighborCellCoordinates):
+            currentCellState = ()
             if self.isCellOnAnyPredator(neighborCellCoordinates):
-                return 3
-            elif self.isCellOnAnyFood(neighborCellCoordinates):
-                return 2
-            elif self.isCellOnAnyObstacle(neighborCellCoordinates):
-                return 1
-            else:
-                return 0
-        
+                currentCellState += (4,)
+            if self.isCellOnAnyFood(neighborCellCoordinates):
+                currentCellState += (3,)
+            if self.isCellOnAnyObstacle(neighborCellCoordinates):
+                currentCellState = (2,)                        
+            if self.hasNoObjectOnCell(neighborCellCoordinates):
+                currentCellState = (0,)
+                
+            if bool(self.getCellFoodIntensity(neighborCellCoordinates)):
+                currentCellState += (self.getCellFoodIntensity(neighborCellCoordinates),)
+                
+            return currentCellState
+            
         return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])
+
+    def getCellFoodIntensity(self,neighborCellCoordinates):
+        cell = self.grid.cellMatrix[neighborCellCoordinates[0]][neighborCellCoordinates[1]]
+        return cell.foodIntensity
+        
+    def hasNoObjectOnCell(self,gridCoordinatesOfCell):
+        return (not (self.isCellOnAnyFood(gridCoordinatesOfCell))) and (not(self.isCellOnAnyObstacle(gridCoordinatesOfCell))) and (not(self.isCellOnAnyPredator(gridCoordinatesOfCell))) and not(self.getCellFoodIntensity(gridCoordinatesOfCell))
+    
     
     def isEatingFood(self):
         return self.isCellOnAnyFood((self.gridX,self.gridY))

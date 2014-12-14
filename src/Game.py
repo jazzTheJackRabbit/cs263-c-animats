@@ -18,7 +18,7 @@ pygame.init()
 pygame.display.set_caption("My Game") 
 clock = pygame.time.Clock()
 
-numberOfCellsInColumnsOrRows = 10
+numberOfCellsInColumnsOrRows = 20
 margin = 5
 done = False
 
@@ -26,10 +26,10 @@ widthOfCell = 20
 heightOfCell = 20
 sizeOfCell = 20
 
-numberOfPreys = 4
-numberOfPredators = 3
-numberOfFoodObjects = 4
-numberOfObstacles = 0
+numberOfPreys = 6
+numberOfPredators = 6
+numberOfFoodObjects = 10
+numberOfObstacles = 10
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
 size = (sizeCalculation, sizeCalculation)
@@ -97,7 +97,7 @@ def worldUpdate(showDisplay):
         clock.tick(10)       
 
 worldAge = 0
-endAge = worldAge + 150000
+endAge = worldAge + 50000
 while not done and worldAge < endAge:
     # --- Main event loop      
     for event in pygame.event.get(): 
