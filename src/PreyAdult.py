@@ -10,9 +10,18 @@ class PreyAdult(Prey):
     dictionaryOfPreyAdults = dict()
     
     def __init__(self,width,height,color,grid):
-        Prey.__init__(self, width, height, color, grid)        
+        Prey.__init__(self, width, height, color, grid)
+        self.offspringsProtected = 0
         PreyAdult.dictionaryOfPreyAdults[(self.gridX,self.gridY)] = self        
-                
+
+    @property
+    def offspringsProtected(self):
+        return self._offspringsProtected
+    
+    @offspringsProtected.setter
+    def offspringsProtected(self,value):
+        self._offspringsProtected = value
+                        
     def getOffspringPositionsInNeighborhood(self):
         neighborGrids = self.getNeighborGridCoordinates()
         offspringPositionsInNeighborhood = []
@@ -58,7 +67,9 @@ class PreyAdult(Prey):
             reward += 100
         
         #Reward for being in between offspring and predator
-        reward += self.rewardForProtection()            
+        if(self.rewardForProtection() > 0):
+            reward += self.rewardForProtection()
+            self.offspringsProtected += 1            
             
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)

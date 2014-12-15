@@ -10,6 +10,8 @@ from PreyOffspring import PreyOffspring
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+CYAN = (0, 255, 200)
+LIGHT_BLUE = (200, 200, 255)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 ORANGE = (255, 102, 0)
@@ -19,7 +21,7 @@ pygame.init()
 pygame.display.set_caption("My Game") 
 clock = pygame.time.Clock()
 
-numberOfCellsInColumnsOrRows = 10
+numberOfCellsInColumnsOrRows = 20
 margin = 5
 done = False
 
@@ -27,11 +29,11 @@ widthOfCell = 20
 heightOfCell = 20
 sizeOfCell = 20
 
-numberOfPreyAdults = 4
-numberOfPreyOffsprings = 2
-numberOfPredators = 3
-numberOfFoodObjects = 5
-numberOfObstacles = 4
+numberOfPreyAdults = 6
+numberOfPreyOffsprings = 3
+numberOfPredators = 4
+numberOfFoodObjects = 10
+numberOfObstacles = 0
 
 sizeCalculation = widthOfCell * numberOfCellsInColumnsOrRows + (margin * (numberOfCellsInColumnsOrRows + 1))
 size = (sizeCalculation, sizeCalculation)
@@ -43,8 +45,8 @@ grid = Grid(numberOfCellsInColumnsOrRows, numberOfCellsInColumnsOrRows, sizeOfCe
 # Always init obstacles before everything else, because you don't want food being init'd on top of obstacle 
 [Obstacle(widthOfCell, heightOfCell, BLACK, grid) for i in range(0, numberOfObstacles)]
 [Predator(widthOfCell, heightOfCell, RED, grid) for i in range(0, numberOfPredators)]
-[PreyAdult(widthOfCell, heightOfCell, BLUE, grid) for i in range(0, numberOfPreyAdults)]
-[PreyOffspring(widthOfCell, heightOfCell, GREEN, grid) for i in range(0, numberOfPreyOffsprings)]
+[PreyAdult(widthOfCell, heightOfCell, GREEN, grid) for i in range(0, numberOfPreyAdults)]
+[PreyOffspring(widthOfCell, heightOfCell, CYAN, grid) for i in range(0, numberOfPreyOffsprings)]
 [Food(widthOfCell, heightOfCell, ORANGE, grid) for i in range(0, numberOfFoodObjects)]
 
 # Reference to all animat agents in the environment
@@ -113,18 +115,18 @@ while not done and worldAge < endAge:
         if event.type == pygame.QUIT: 
             done = True            
     
-    grid.shouldDrawScreen = True  
+    grid.shouldDrawScreen = False  
     worldUpdate(grid.shouldDrawScreen)
     
     if worldAge % 10000 == 0:
         preyAdultKeys = PreyAdult.dictionaryOfPreyAdults.keys()
         for preyAdultPosition in preyAdultKeys:
-            singular_prey = PreyAdult.dictionaryOfPreyAdults[preyAdultPosition]                    
-            mouse = singular_prey
-            print "{:d}, e: {:0.2f}, W: {:d}, L: {:d}"\
-                .format(worldAge, mouse.ai.epsilon, mouse.fed, mouse.eaten)
-            mouse.eaten = 0
-            mouse.fed = 0
+            singular_prey = PreyAdult.dictionaryOfPreyAdults[preyAdultPosition]                                
+            print "{:d}, e: {:0.2f}, W: {:d}, L: {:d}, CP: {:d}"\
+                .format(worldAge, singular_prey.ai.epsilon, singular_prey.fed, singular_prey.eaten, singular_prey.offspringsProtected)
+            singular_prey.eaten = 0
+            singular_prey.fed = 0
+            singular_prey.offspringsProtected = 0
             
     worldAge += 1
     

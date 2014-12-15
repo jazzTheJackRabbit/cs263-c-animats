@@ -1,4 +1,5 @@
 import PreyAdult
+import PreyOffspring
 import qlearn_mod_random as qlearn
 from AnimatObject import Animat
 from Food import Food
@@ -31,7 +32,15 @@ class Predator(Animat):
         for neighborGrid in neighborGrids:
             if(PreyAdult.PreyAdult.dictionaryOfPreyAdults.has_key(neighborGrid)):
                 preyPositionsInNeighborhood.append(neighborGrid)
-        return preyPositionsInNeighborhood    
+        return preyPositionsInNeighborhood
+    
+    def getPreyOffspringPositionsInNeighborhood(self):
+        neighborGrids = self.getNeighborGridCoordinates()
+        offspringPositionsInNeighborhood = []
+        for neighborGrid in neighborGrids:
+            if(PreyOffspring.PreyOffspring.dictionaryOfOffsprings.has_key(neighborGrid)):
+                offspringPositionsInNeighborhood.append(neighborGrid)
+        return offspringPositionsInNeighborhood    
         
     def update(self):
         state = self.calculateState()
@@ -41,10 +50,10 @@ class Predator(Animat):
         if (self.gridX,self.gridY) in self.previousPositionTuples:
             reward += -20
         
-        elif(self.hasPreyAdultInNeighborhood()):
+        elif(self.hasPreyAdultInNeighborhood() or self.hasPreyOffspringInNeighborhood()):
             reward = 20
                              
-        if(self.isEatingPreyAdult()):
+        if(self.isEatingPreyAdult() or self.isEatingPreyOffspring()):
             #PreyAdult re-spawns itself randomly, if it gets eaten
             self.fed += 1
             reward = 50            
@@ -74,18 +83,34 @@ class Predator(Animat):
         return tuple([stateValueForNeighbor(neighborCellCoordinates) for neighborCellCoordinates in self.getNeighborGridCoordinates()])    
     
     def hasPreyAdultInNeighborhood(self):
-        preyInNeighborHood = self.getPreyAdultPositionsInNeighborhood()
-        if(len(preyInNeighborHood) > 0):
+        preyAdultInNeighborHood = self.getPreyAdultPositionsInNeighborhood()
+        if(len(preyAdultInNeighborHood) > 0):
+            return True
+        return False
+    
+    def hasPreyOffspringInNeighborhood(self):
+        preyOffspringInNeighborHood = self.getPreyOffspringPositionsInNeighborhood()
+        if(len(preyOffspringInNeighborHood) > 0):
             return True
         return False
     
     def isEatingPreyAdult(self):
         return self.isCellOnAnyPreyAdult((self.gridX,self.gridY))
+    
+    def isEatingPreyOffspring(self):
+        return self.isCellOnAnyPreyOffspring((self.gridX,self.gridY))
         
     def isCellOnAnyPreyAdult(self,gridCoordinatesOfCell):
-        preyKeys = PreyAdult.PreyAdult.dictionaryOfPreyAdults.keys() #Keys are tuples and Values are references to the actual prey object
-        for preyPosition in preyKeys:
-            if(gridCoordinatesOfCell == preyPosition):
+        preyAdultKeys = PreyAdult.PreyAdult.dictionaryOfPreyAdults.keys() #Keys are tuples and Values are references to the actual prey object
+        for preyAdultPosition in preyAdultKeys:
+            if(gridCoordinatesOfCell == preyAdultPosition):
+                return True
+        return False
+    
+    def isCellOnAnyPreyOffspring(self,gridCoordinatesOfCell):
+        preyOffspringKeys = PreyOffspring.PreyOffspring.dictionaryOfOffsprings.keys() #Keys are tuples and Values are references to the actual prey object
+        for preyOffspringPosition in preyOffspringKeys:
+            if(gridCoordinatesOfCell == preyOffspringPosition):
                 return True
         return False
     
