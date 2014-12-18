@@ -33,7 +33,7 @@ class PreyAdult(Prey):
     def update(self):
         state = self.calculateState()
         reward = -20
-        
+        leaderHasSetAction = False
         #Check if the animat is on a food Intensity gradient                
         if(self.rewardForProximityToFood()):
             reward +=  -1*(1 - self.rewardForProximityToFood())
@@ -73,9 +73,35 @@ class PreyAdult(Prey):
             
         if(self.lastState is not None):
             self.ai.learn(self.lastState,self.lastAction,reward,state)
-            
+                
         state = self.calculateState()
-        action = self.ai.chooseAction(state)
+#         rewardFromFollowingLeader = 0
+        #Override this action if the prey is in proximity of the leader:
+        #Check if the reward from following the leader is more
+        action = None
+        leader = self.findLeaderInNeighborhood()
+        if(leader != None):
+            #If self is NOT the leader    
+            if(self != leader):    
+                #add self to group
+                self.group = leader.group
+                if(not self in self.group.preyClan):
+                    self.group.addPreyToGroup(self)
+                #Check the food intensity of the leader, follow him if it's greater than own food Intensity
+#                 if(self.grid.cellMatrix[self.gridX][self.gridY].foodIntesity <= self.grid.cellMatrix[leader.gridX][leader.gridY].foodIntesity):
+                    #Set action to that of leaders
+                action = self.group.leadersAction
+                leaderHasSetAction = True
+            #If self is the leader
+            else: #TODO: or rewardFromFollowingLeader < reward):
+                action = self.ai.chooseAction(state)
+                try:
+                    self.group.leadersAction = action
+                except AttributeError:
+                    self.group.leadersAction = action              
+        else:
+            action = self.ai.chooseAction(state)
+            
         self.lastState = state
         self.lastAction = action
         self.setPrevious2Positions()
@@ -85,6 +111,8 @@ class PreyAdult(Prey):
     def calculateState(self):
         def stateValueForNeighbor(neighborCellCoordinates):
             currentCellState = ()
+            if self.isCellOnAnyLeader(neighborCellCoordinates):
+                currentCellState += (6,)
             if self.isCellOnAnyOffspring(neighborCellCoordinates):
                 currentCellState += (5,)
             if self.isCellOnAnyPredator(neighborCellCoordinates):

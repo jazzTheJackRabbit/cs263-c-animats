@@ -6,6 +6,7 @@ from Obstacle import Obstacle
 import qlearn_mod_random as qlearn
 from Actions import Actions
 import numpy as np
+import Game
 
 class Prey(Animat):
         
@@ -14,8 +15,43 @@ class Prey(Animat):
     def __init__(self,width,height,color,grid):
         Animat.__init__(self, width, height, color, grid)
         self.ai = qlearn.QLearn(actions=range(Actions.directions),alpha=0.1, gamma=0.9, epsilon=0.1)
-        self.eaten = 0  
-        Prey.dictionaryOfPreys[(self.gridX,self.gridY)] = self      
+        self.eaten = 0
+        self.group = None  
+        self.freeAgentList = None
+        Prey.dictionaryOfPreys[(self.gridX,self.gridY)] = self
+        
+        gameInstance = Game.Game.singletonInstance
+        gameInstance.freeAgentList.append(self)
+#         if(self.freeAgentList != None): 
+        self.freeAgentList = gameInstance.freeAgentList
+    
+    ###Instance Variables####    
+    
+    @property
+    def eaten(self):
+        return self._eaten
+    
+    @eaten.setter
+    def eaten(self,value):
+        self._eaten = value
+        
+    @property
+    def group(self):
+        return self._group
+    
+    @group.setter
+    def group(self,value):        
+        self._group = value
+    
+    @property
+    def freeAgentList(self):
+        return self._freeAgentList
+    
+    @freeAgentList.setter
+    def freeAgentList(self,value):
+        self._freeAgentList = value
+        
+    ###Instance Methods####
         
     def getPredatorPositionsInNeighborhood(self):
         neighborGrids = self.getNeighborGridCoordinates()
@@ -95,7 +131,19 @@ class Prey(Animat):
         return False
     
     def isBeingEatenByPredator(self):
-        return self.isCellOnAnyPredator((self.gridX,self.gridY))
+        isBeingEaten = self.isCellOnAnyPredator((self.gridX,self.gridY))
+        if(isBeingEaten):
+            if(self.group != None):
+                if(self == self.group.groupLeader):
+                    gameInstance = Game.Game.singletonInstance        
+                    gameInstance.leaderPreyList.remove(self)
+                self.group.removePreyFromGroup(self) #Auto selects new leader
+            self.group = None 
+            
+            if(not self in self.freeAgentList):
+                self.freeAgentList.append(self)
+                
+        return isBeingEaten
     
     def calculateState(self):
         def stateValueForNeighbor(neighborCellCoordinates):
@@ -145,9 +193,12 @@ class Prey(Animat):
     
     def move(self, directionX, directionY):
         #Override for subclass
-        Animat.move(self, directionX, directionY)
 #         oldXPosition = self.gridX
-#         oldYPosition = self.gridY        
+#         oldYPosition = self.gridY
+        Animat.move(self, directionX, directionY)
+#         Prey.dictionaryOfPreys.pop((oldXPosition,oldYPosition))
+#         Prey.dictionaryOfPreys[(self.gridX,self.gridY)] = self;
+                
 #         nextXPosition = self.gridX + directionX
 #         nextYPosition = self.gridY + directionY
 #         if(self.isMovementPossible(nextXPosition, nextYPosition)):
@@ -209,6 +260,42 @@ class Prey(Animat):
                 theta = 3*pi/2 - np.arctan(slope)
         
         return round(theta * 180 / pi)
+    
+    def isWithinRangeOfAnyLeader(self,leader):
+        distanceToLeader = ((leader.gridX - self.gridX)**2+(leader.gridY - self.gridY)**2)**0.5
+        if(distanceToLeader <= 2):
+            return True
+        else:
+            return False
+        
+    def isCellOnAnyLeader(self,gridCoordinatesOfCell):
+        gameInstance = Game.Game.singletonInstance
+        leaderList = gameInstance.leaderPreyList
+        for leader in leaderList:
+            if(gridCoordinatesOfCell == (leader.gridX,leader.gridY)):
+                return True
+            return False
+        
+    def findLeaderInNeighborhood(self):
+        gameInstance = Game.Game.singletonInstance
+        preyLeaders = gameInstance.leaderPreyList
+        
+        if(self.group == None):
+            for leader in preyLeaders:
+                if(self.isWithinRangeOfAnyLeader(leader)):
+                    return leader
+        elif(self.group.groupLeader != None):
+            return self.group.groupLeader
+        
+        return None
+        
+    def removeSelfFromGroup(self):
+        group = self.group
+        group.removePreyFromGroup(self)
+                
+                
+    
+        
    
         
     

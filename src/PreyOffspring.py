@@ -71,6 +71,8 @@ class PreyOffspring(Prey):
     def calculateState(self):
         def stateValueForNeighbor(neighborCellCoordinates):
             currentCellState = ()
+            if self.isCellOnAnyLeader(neighborCellCoordinates):
+                currentCellState += (6,)
             if self.isCellOnAnyPrey(neighborCellCoordinates):
                 currentCellState += (5,)
             if self.isCellOnAnyPredator(neighborCellCoordinates):
